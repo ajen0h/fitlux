@@ -1,6 +1,7 @@
 package adnavas.fitlux_backend.security.filter;
 
 import adnavas.fitlux_backend.entity.Usuario;
+import adnavas.fitlux_backend.service.UsuarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,12 +9,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -47,7 +50,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             throw new RuntimeException(e);
         }
 
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
         return authenticationManager.authenticate(authenticationToken);
@@ -57,12 +59,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
 
+        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        UsuarioService usuarioService = context.getBean(UsuarioService.class);
+
         String username = user.getUsername();
+        Usuario usuario = usuarioService.findByUsername(username);
+        String id = usuario.get_id().toHexString();
+
 
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
         Claims claims = Jwts.claims()
                 .add("authorities", new ObjectMapper().writeValueAsString(roles))
                 .add("username", username)
+                .add("userId",id)
                 .build();
 
         String token = Jwts.builder()

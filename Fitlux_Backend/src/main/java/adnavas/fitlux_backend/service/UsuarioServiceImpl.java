@@ -33,10 +33,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Usuario findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     @Transactional
     public Usuario addUsuario(Usuario user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.set_id(ObjectId.get());
         return userRepository.save(user);
     }
 
@@ -51,6 +55,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario updateUsuario(ObjectId id, Usuario usuario) {
         Usuario usuarioUpdate = userRepository.findBy_id(id);
         usuarioUpdate.setDni(usuario.getDni());
+        usuarioUpdate.setFullname(usuario.getFullname());
         usuarioUpdate.setRole(usuario.getRole());
         usuarioUpdate.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioUpdate.setEmail(usuario.getEmail());
