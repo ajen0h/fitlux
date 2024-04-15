@@ -12,9 +12,7 @@ public interface UsuarioService {
     Usuario findById(ObjectId id);
     Usuario findByUsername(String username);
     Usuario addUsuario (Usuario user);
-
     Usuario deleteUsuario(ObjectId id);
-
     Usuario updateUsuario(ObjectId id, Usuario usuario);
 
 }

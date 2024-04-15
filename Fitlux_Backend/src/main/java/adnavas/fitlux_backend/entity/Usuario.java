@@ -1,8 +1,10 @@
 package adnavas.fitlux_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.bson.types.ObjectId;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -20,16 +22,21 @@ public class Usuario {
     private ObjectId _id;
 
     @Indexed(unique = true)
+    @NotEmpty(message = "El usuario debe tener un username")
     private String username;
 
+    @NotEmpty(message = "El usuario debe tener un email")
     @Indexed(unique = true)
     private String email;
 
+    @NotEmpty(message = "El usuario debe tener una contraseña")
     private String password;
 
+    @NotEmpty(message = "El usuario debe tener un dni")
     @Indexed(unique = true)
     private String dni;
 
+    @NotEmpty(message = "El usuario debe tener nombre y apellidos")
     private String fullname;
 
     private String role;

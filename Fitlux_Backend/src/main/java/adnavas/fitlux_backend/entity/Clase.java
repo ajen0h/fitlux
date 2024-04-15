@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,23 +22,23 @@ public class Clase {
 
     private LocalDateTime fechafin;
 
-    private Usuario profesor;
+    private ObjectId profesor_id;
 
-    private ArrayList<Usuario> usuarios;
+    private List<ObjectId> usuarios;
 
-    private Deporte deporte;
+    private ObjectId deporte_id;
 
-    private Sala sala;
+    private ObjectId sala_id;
 
     private boolean activa;
 
-    public Clase(LocalDateTime fechainicio, LocalDateTime fechafin, Usuario profesor, ArrayList<Usuario> usuarios, Deporte deporte, Sala sala, boolean activa) {
+    public Clase(LocalDateTime fechainicio, LocalDateTime fechafin, ObjectId profesor_id, List<ObjectId> usuarios, ObjectId deporte_id, ObjectId sala_id, boolean activa) {
         this.fechainicio = fechainicio;
         this.fechafin = fechafin;
-        this.profesor = profesor;
+        this.profesor_id = profesor_id;
         this.usuarios = usuarios;
-        this.deporte = deporte;
-        this.sala = sala;
+        this.deporte_id = deporte_id;
+        this.sala_id = sala_id;
         this.activa = activa;
     }
 }

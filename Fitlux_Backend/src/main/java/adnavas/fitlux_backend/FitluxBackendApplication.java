@@ -25,7 +25,7 @@ public class FitluxBackendApplication {
             Usuario usuario = new Usuario(
                     "anavas",
                     "adrian.navasdev@gmail.com",
-                    passwordEncoder.encode("adriluna11"),
+                    passwordEncoder.encode("anavas"),
                     "49505472L",
                     "Adrián Navas",
                     "ROLE_ADMIN",

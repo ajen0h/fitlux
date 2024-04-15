@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
     @Autowired
     UsuarioService userService;
@@ -31,8 +31,9 @@ public class UsuarioController {
 
     @Operation(summary = "OBTENER el usuario a través de su ID", description = "Esta ruta devuelve el usuario de la aplicación cuyo ID le pasamos como parámetro")
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> view(@PathVariable ObjectId id){
-        Usuario usuarioFound = userService.findById(id);
+    public ResponseEntity<Usuario> view(@PathVariable String id){
+        ObjectId objectId = new ObjectId(id);
+        Usuario usuarioFound = userService.findById(objectId);
         if(usuarioFound != null){
             return ResponseEntity.ok(usuarioFound);
         }
@@ -59,13 +60,13 @@ public class UsuarioController {
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 
-        result.getFieldErrors().forEach(err -> errors.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage()));
+        result.getFieldErrors().forEach(err -> errors.put(err.getField(),err.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 
     @Operation(summary = "ACTUALIZAR un usuario", description = "Esta ruta hace que puedas actualizar un usuario de la aplicación pasándole el ID y el objeto nuevo")
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable String id, @RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> update(@PathVariable String id, @Valid @RequestBody Usuario usuario){
         ObjectId objectId = new ObjectId(id);
         Usuario usuarioUpdate = userService.updateUsuario(objectId, usuario);
         if(usuarioUpdate != null) {
