@@ -30,13 +30,13 @@ public class SalaController {
 
     @Operation(summary = "OBTENER la sala a través de su ID", description = "Esta ruta devuelve la sala de la aplicación cuyo ID le pasamos como parámetro")
     @GetMapping("/{id}")
-    public ResponseEntity<Sala> view(@PathVariable String id){
+    public ResponseEntity<?> view(@PathVariable String id){
         ObjectId objectId = new ObjectId(id);
         Sala salaFound = salaService.findById(objectId);
         if(salaFound != null){
             return ResponseEntity.ok(salaFound);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Sala no encontrada con ID: " + id);
     }
 
     @Operation(summary = "CREAR una sala", description = "Esta ruta hace que puedas añadir una sala a la aplicación pasándosela como parámetro estableciendole lo que desee el administrador")
@@ -45,7 +45,12 @@ public class SalaController {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(salaService.addSala(sala));
+        Sala salaCreate = salaService.addSala(sala);
+        if (salaCreate != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Sala creada correctamente");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido crear la sala");
+        }
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
@@ -57,23 +62,23 @@ public class SalaController {
 
     @Operation(summary = "ACTUALIZAR una sala", description = "Esta ruta hace que puedas actualizar una sala de la aplicación pasándole el ID y el objeto nuevo")
     @PutMapping("/{id}")
-    public ResponseEntity<Sala> update(@PathVariable String id, @Valid @RequestBody Sala sala){
+    public ResponseEntity<String> update(@PathVariable String id, @Valid @RequestBody Sala sala){
         ObjectId objectId = new ObjectId(id);
         Sala salaUpdate = salaService.updateSala(objectId, sala);
         if(salaUpdate != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(salaUpdate);
+            return ResponseEntity.status(HttpStatus.OK).body("Sala actualizada correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar la sala a actualizar");
     }
 
     @Operation(summary = "BORRAR una sala", description = "Esta ruta hace que puedas borrar una sala de la aplicación pasándole su ID como parámetro")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Sala> delete(@PathVariable String id){
+    public ResponseEntity<String> delete(@PathVariable String id){
         ObjectId objectId = new ObjectId(id);
         Sala salaDelete = salaService.deleteSala(objectId);
         if(salaDelete != null){
-            return ResponseEntity.ok(salaDelete);
+            return ResponseEntity.status(HttpStatus.OK).body("Sala borrada correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar la sala a borrar");
     }
 }

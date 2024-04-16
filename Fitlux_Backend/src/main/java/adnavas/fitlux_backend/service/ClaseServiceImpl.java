@@ -6,7 +6,6 @@ import adnavas.fitlux_backend.repository.ClaseRepository;
 import adnavas.fitlux_backend.repository.UsuarioRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,7 @@ public class ClaseServiceImpl implements ClaseService {
 
     @Autowired
     UsuarioRepository userRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<Clase> findAll() {
@@ -61,18 +61,42 @@ public class ClaseServiceImpl implements ClaseService {
     }
 
     @Override
-    public List<Usuario> obtenerUsuariosPorId(List<ObjectId> userIds) {
+    public List<Usuario> listarUsuariosClase(List<ObjectId> userIds) {
         return userRepository.findBy_idIn(userIds);
     }
 
     @Override
-    public Clase registrarUsuario(ObjectId claseId,ObjectId userId) {
-        Clase clase = findById(claseId);
-        List<ObjectId>usuarios = clase.getUsuarios();
-        usuarios.add(userId);
-        clase.setUsuarios(usuarios);
+    public boolean registrarUsuario(ObjectId claseId, ObjectId userId) {
+        try {
+            Clase clase = findById(claseId);
+            if (!clase.getUsuarios().contains(userId)){
+                clase.getUsuarios().add(userId);
+                claseRepository.save(clase);
+                return true;
+            }else{
+                return false;
+            }
 
-        return clase;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean eliminarRegistroUsuario(ObjectId claseId, ObjectId userId) {
+        try {
+            Clase clase = findById(claseId);
+            if (clase.getUsuarios().contains(userId)){
+                clase.getUsuarios().remove(userId);
+                claseRepository.save(clase);
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

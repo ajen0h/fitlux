@@ -35,7 +35,7 @@ public class DeporteServiceImpl implements DeporteService{
     public Deporte deleteDeporte(ObjectId id) {
         Deporte deporteDelete = deporteRepository.findBy_id(id);
         deporteRepository.delete(deporteDelete);
-        return null;
+        return deporteDelete;
     }
 
     @Override

@@ -46,13 +46,17 @@ public class UsuarioController {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUsuario(user));
+        Usuario usuarioCreate = userService.addUsuario(user);
+        if (usuarioCreate != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado correctamente");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido crear el usuario");
+        }
     }
 
     @Operation(summary = "REGISTRA un usuario", description = "Esta ruta hace que puedas añadir un usuario por defecto a la aplicación como parámetro")
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody Usuario user, BindingResult result) {
-
         return create(user, result);
     }
 
@@ -66,23 +70,23 @@ public class UsuarioController {
 
     @Operation(summary = "ACTUALIZAR un usuario", description = "Esta ruta hace que puedas actualizar un usuario de la aplicación pasándole el ID y el objeto nuevo")
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable String id, @Valid @RequestBody Usuario usuario){
+    public ResponseEntity<String> update(@PathVariable String id, @Valid @RequestBody Usuario usuario){
         ObjectId objectId = new ObjectId(id);
         Usuario usuarioUpdate = userService.updateUsuario(objectId, usuario);
         if(usuarioUpdate != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioUpdate);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario actualizado correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar el usuario a actualizar");
     }
 
     @Operation(summary = "BORRAR un usuario", description = "Esta ruta hace que puedas borrar un usuario de la aplicación pasándole su ID como parámetro")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Usuario> delete(@PathVariable String id){
+    public ResponseEntity<String> delete(@PathVariable String id){
         ObjectId objectId = new ObjectId(id);
         Usuario usuarioDelete = userService.deleteUsuario(objectId);
         if(usuarioDelete != null){
-            return ResponseEntity.ok(usuarioDelete);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario borrado correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar el usuario a borrar");
     }
 }

@@ -1,11 +1,13 @@
 package adnavas.fitlux_backend.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,19 +17,24 @@ import java.util.List;
 @Data
 @Document(collection = "clases")
 public class Clase {
-    @Id
+    @MongoId
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId _id;
 
     private LocalDateTime fechainicio;
 
     private LocalDateTime fechafin;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId profesor_id;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private List<ObjectId> usuarios;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId deporte_id;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId sala_id;
 
     private boolean activa;

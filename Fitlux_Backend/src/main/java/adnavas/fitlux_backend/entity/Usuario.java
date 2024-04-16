@@ -1,11 +1,12 @@
 package adnavas.fitlux_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.boot.context.properties.bind.DefaultValue;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
@@ -18,7 +19,8 @@ import java.util.List;
 @Data
 @Document(collection = "usuarios")
 public class Usuario {
-    @Id
+    @MongoId
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId _id;
 
     @Indexed(unique = true)

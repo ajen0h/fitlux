@@ -1,24 +1,28 @@
 package adnavas.fitlux_backend.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Document(collection = "avisos")
 public class Aviso {
-    @Id
+    @MongoId
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId _id;
-    private Usuario usuario;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId usuario_id;
     private String mensaje;
 
-    public Aviso(Usuario usuario, String mensaje) {
-        this.usuario = usuario;
+    public Aviso(ObjectId usuario_id, String mensaje) {
+        this.usuario_id = usuario_id;
         this.mensaje = mensaje;
     }
 }

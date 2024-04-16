@@ -31,13 +31,13 @@ public class DeporteController {
 
     @Operation(summary = "OBTENER el deporte a través de su ID", description = "Esta ruta devuelve el deporte de la aplicación cuyo ID le pasamos como parámetro")
     @GetMapping("/{id}")
-    public ResponseEntity<Deporte> view(@PathVariable String id){
+    public ResponseEntity<?> view(@PathVariable String id) {
         ObjectId objectId = new ObjectId(id);
         Deporte deporteFound = deporteService.findById(objectId);
-        if(deporteFound != null){
+        if (deporteFound != null) {
             return ResponseEntity.ok(deporteFound);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Deporte no encontrado con ID: " + id);
     }
 
     @Operation(summary = "CREAR un deporte", description = "Esta ruta hace que puedas añadir un deporte a la aplicación pasándoselo como parámetro estableciendole lo que desee el administrador")
@@ -46,35 +46,41 @@ public class DeporteController {
         if (result.hasFieldErrors()) {
             return validation(result);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(deporteService.addDeporte(deporte));
+        Deporte deporteCreate = deporteService.addDeporte(deporte);
+        if (deporteCreate != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Deporte creado correctamente");
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido crear el deporte");
+        }
     }
 
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 
-        result.getFieldErrors().forEach(err -> errors.put(err.getField(),err.getDefaultMessage()));
+        result.getFieldErrors().forEach(err -> errors.put(err.getField(), err.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
     }
 
     @Operation(summary = "ACTUALIZAR un deporte", description = "Esta ruta hace que puedas actualizar un deporte de la aplicación pasándole el ID y el objeto nuevo")
     @PutMapping("/{id}")
-    public ResponseEntity<Deporte> update(@PathVariable String id, @Valid @RequestBody Deporte deporte){
+    public ResponseEntity<String> update(@PathVariable String id, @Valid @RequestBody Deporte deporte) {
         ObjectId objectId = new ObjectId(id);
         Deporte deporteUpdate = deporteService.updateDeporte(objectId, deporte);
-        if(deporteUpdate != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(deporteUpdate);
+        if (deporteUpdate != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Deporte actualizado correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar el deporte a actualizar");
     }
 
     @Operation(summary = "BORRAR un deporte", description = "Esta ruta hace que puedas borrar un deporte de la aplicación pasándole su ID como parámetro")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Deporte> delete(@PathVariable String id){
+    public ResponseEntity<String> delete(@PathVariable String id) {
         ObjectId objectId = new ObjectId(id);
         Deporte deporteDelete = deporteService.deleteDeporte(objectId);
-        if(deporteDelete != null){
-            return ResponseEntity.ok(deporteDelete);
+        if (deporteDelete != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Deporte borrado correctamente");
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha podido encontrar el deporte a borrar");
+
     }
 }
