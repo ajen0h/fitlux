@@ -32,6 +32,7 @@ public class ClaseController {
     public List<Clase> list() {
         return claseService.findAll();
     }
+
     @Operation(summary = "OBTENER todos los usuarios de una clase con ID", description = "Esta ruta devuelve todas las clases de la aplicación")
     @GetMapping("/usuarios/{idClase}")
     public ResponseEntity<?> listClassUsers(@PathVariable String idClase) {
@@ -42,6 +43,18 @@ public class ClaseController {
             return ResponseEntity.ok(usuarios);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Clase no encontrada con ID: " + idClase);
+        }
+    }
+
+    @Operation(summary = "OBTENER todas las clases de un deporte a raiz de su ID", description = "Esta ruta devuelve todas las clases de la aplicación cuyo deporte se le pasa como parametro")
+    @GetMapping("/deporte/{idDeporte}")
+    public ResponseEntity<?> listClasesByDeporte(@PathVariable String idDeporte) {
+        ObjectId objectId = new ObjectId(idDeporte);
+        List<Clase> clasesDeporte = claseService.findClasesByDeporte_id(objectId);
+        if (clasesDeporte != null) {
+            return ResponseEntity.ok(clasesDeporte);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Clases no encontradas con deporte ID: " + idDeporte);
         }
     }
 

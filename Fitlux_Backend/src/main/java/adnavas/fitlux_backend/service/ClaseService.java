@@ -13,6 +13,8 @@ public interface ClaseService {
     Clase deleteClase(ObjectId id);
     Clase updateClase(ObjectId id, Clase clase);
 
+    List<Clase>findClasesByDeporte_id(ObjectId deporteId);
+
     List<Usuario>listarUsuariosClase(List<ObjectId> userIds);
 
     boolean registrarUsuario(ObjectId claseId,ObjectId userId);

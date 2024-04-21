@@ -54,13 +54,6 @@ public class UsuarioController {
         }
     }
 
-    @Operation(summary = "REGISTRA un usuario", description = "Esta ruta hace que puedas añadir un usuario por defecto a la aplicación como parámetro")
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody Usuario user, BindingResult result) {
-        return create(user, result);
-    }
-
-
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();
 

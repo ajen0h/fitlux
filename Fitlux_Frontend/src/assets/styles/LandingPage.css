@@ -1,0 +1,43 @@
+.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8; /* Set background color */
+  }
+  
+  .content {
+    text-align: center;
+  }
+  
+  .fitlux {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 72px;
+    color: #333; /* Text color */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+  }
+  
+  .gym-element {
+    width: 80px; /* Adjust size as needed */
+    opacity: 0; /* Initially hidden */
+  }
+  
+  .get-started {
+    padding: 15px 30px;
+    background-color: #ff6f61;
+    color: #fff;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.5s;
+    margin-top: 30px;
+  }
+  
+  .get-started:hover {
+    background-color: #ff473d;
+  }
+  
+  

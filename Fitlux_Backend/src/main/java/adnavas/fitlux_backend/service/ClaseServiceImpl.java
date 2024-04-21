@@ -61,6 +61,11 @@ public class ClaseServiceImpl implements ClaseService {
     }
 
     @Override
+    public List<Clase> findClasesByDeporte_id(ObjectId deporteId) {
+        return claseRepository.findClasesByDeporte_id(deporteId);
+    }
+
+    @Override
     public List<Usuario> listarUsuariosClase(List<ObjectId> userIds) {
         return userRepository.findBy_idIn(userIds);
     }

@@ -44,16 +44,17 @@ public class SpringSecurityConfig {
         return http.authorizeHttpRequests(auth ->
                         //USUARIOS
                 auth.requestMatchers(HttpMethod.GET,"/api/users").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users/register").permitAll()
                         .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/users/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/users/{id}").hasRole("ADMIN")
                         //SALAS
                         .requestMatchers(HttpMethod.GET,"/api/salas","/api/salas/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/salas").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/salas/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/salas/{id}").hasRole("ADMIN")
                         //CLASES
-                        .requestMatchers(HttpMethod.GET,"/api/clases","/api/clases/{id}","/api/clases/usuarios/{idClase}").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/clases","/api/clases/{id}","/api/clases/deporte/{idDeporte}","/api/clases/usuarios/{idClase}").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/clases").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/clases/register").hasRole("USER")
                         .requestMatchers(HttpMethod.POST,"/api/clases/unregister").hasRole("USER")
