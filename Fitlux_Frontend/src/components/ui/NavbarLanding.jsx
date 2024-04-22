@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export const NavbarLanding = () => {
   return (
     <nav className="sticky top-10 z-10 bg-transparent">
@@ -5,10 +7,9 @@ export const NavbarLanding = () => {
         <div className="flex items-center justify-between h-0">
           <span className="text-2xl font-semibold">Logo</span>
           <div className="flex space-x-4">
-            <a href="#">Mi App</a>
-            <a href="#">Sobre nosotros</a>
-            <a href="#">Alquileres</a>
-            <a href="#">Log in</a>
+          <Link to="/inicio">Inicio</Link>
+          <Link to="/about">Sobre nosotros</Link>
+          <Link to="/404">Log in</Link>
           </div>
         </div>
       </div>
