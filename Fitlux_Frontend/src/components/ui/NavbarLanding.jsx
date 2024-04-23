@@ -1,18 +1,19 @@
+import { MenuIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-
 export const NavbarLanding = () => {
   return (
-    <nav className="fixed w-full p-8 top-0 z-10 bg-transparent ">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-0">
-          <span className="text-2xl font-semibold"><img className="w-36" src="/logo-fitlux.png"></img></span>
-          <div className="flex space-x-6">
-          <Link to="/">Inicio</Link>
-          <Link to="/about">Sobre nosotros</Link>
-          <Link to="/login">Log in</Link>
-          </div>
+    <>
+      <nav className="fixed top-0 z-10 w-full">
+        <div className="max-w-7xl p-10 flex justify-between items-center m-[0_auto]">
+          <img src="/logo-fitlux.png" className="w-12"/>
+          <ul className="md:flex flex-row justify-center items-center gap-5 hidden">
+            <Link to='/'>Inicio</Link>
+            <Link to='/about'>Sobre nosotros</Link>
+            <Link to='/login'>Log in</Link>
+          </ul>
+          <MenuIcon className="md:hidden block size-8 cursor-pointer"/>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
